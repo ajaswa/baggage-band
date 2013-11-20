@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>BaggageBand</title>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>  
+    <script src="src/baggageband.js"></script>
+    <link rel="stylesheet" media="screen" href="src/baggageband.css">
+
+    <script>
+      $(function() {
+          new BaggageBand();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="bb-container">
+      <div id="bb-content">
+        <a href="http://www.flickr.com/photos/icanchangethisright/7644763220/" title="baggage claim by bradleygee, on Flickr"><img src="http://farm8.staticflickr.com/7259/7644763220_f71a2b6788.jpg" width="500" height="333" alt="baggage claim"></a>
+        <a href="http://www.flickr.com/photos/booleansplit/3743575079/" title="baggage carousel #3 by Robert S. Donovan, on Flickr"><img src="http://farm3.staticflickr.com/2522/3743575079_b86b1d91a6.jpg" width="400" height="500" alt="baggage carousel #3"></a>
+        <div data-bb-snippet-url="demo.html"></div>
+      </div>
+      <div id="bb-controls">
+        <div id="bb-previous"></div>
+        <div id="bb-next"></div>
+      </div>
+      <div id="bb-indicator"><span></span></div>
+    </div>
+  </body>
+</html>
