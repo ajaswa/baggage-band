@@ -51,44 +51,45 @@ BaggageBand.prototype._setup = function() {
   // jQuery(this.container).append(BaggageBand.options.html);
   var that = this;
   // console.log(jQuery(this.next));
-  jQuery(this.next).on('click', function() { that._paginate('next', that) } );
-  jQuery(this.prev).on('click', function() { that._paginate('prev', that) } );
+  jQuery(this.next).on('click', function() { that.nextPage() } );
+  jQuery(this.prev).on('click', function() { that.prevPage() } );
+
+  this._displayCurrentPanel();
 
   jQuery(document).trigger('baggageband.initialized');
 };
 
-BaggageBand.prototype._paginate = function(thing, that) {
-  switch (thing) {
-    case 'next':
-      // check and make sure we aren't at
-      // the end go to start if we are
-      if (that.current === that.items){
-        that.current = 1;
-      } else {
-        that.current++;
-      }
-      jQuery(document).trigger('baggageband.next');
-      break;
-    case 'prev':
-      // check and make sure we aren't at
-      // the start go to end if we are
-      if (that.current === 1){
-        that.current = that.items;
-      } else {
-        that.current--;
-      }
-      jQuery(document).trigger('baggageband.prev');
-      break;
-    default:
-      // if we don't pass in prev or next pass in a number.
-      that.current = thing;
-      console.log(thing);
-      break;
-  }
-  // now we know where to go, trigger event and show panel
-  //
-
-  console.log(that.current);
-
-  jQuery(document).trigger('baggageband.paginated');
+BaggageBand.prototype._displayCurrentPanel = function() {
+  jQuery(this.panels).hide();
+  jQuery(this.panels[this.current - 1]).show();
 };
+
+BaggageBand.prototype.nextPage = function() {
+  // check and make sure we aren't at
+  // the end go to start if we are
+  if (this.current === this.items){
+    this.current = 1;
+  } else {
+    this.current++;
+  }
+
+  this._displayCurrentPanel();
+
+  jQuery(document).trigger('baggageband.next');
+};
+
+
+BaggageBand.prototype.prevPage = function() {
+  // check and make sure we aren't at
+  // the end go to start if we are
+  if (this.current === 1){
+    this.current = this.items;
+  } else {
+    this.current--;
+  }
+
+  this._displayCurrentPanel();
+
+  jQuery(document).trigger('baggageband.prev');
+};
+
