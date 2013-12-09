@@ -51,13 +51,20 @@ BaggageBand.prototype._setup = function() {
   // jQuery(this.container).append(BaggageBand.options.html);
   var that = this;
   // console.log(jQuery(this.next));
-  jQuery(this.next).on('click', function() { that.next() } );
-  jQuery(this.prev).on('click', function() { that.prev() } );
+  jQuery(this.next).on('click', function() { that.nextPage() } );
+  jQuery(this.prev).on('click', function() { that.prevPage() } );
+
+  this._displayCurrentPanel();
 
   jQuery(document).trigger('baggageband.initialized');
 };
 
-BaggageBand.prototype.next = function() {
+BaggageBand.prototype._displayCurrentPanel = function() {
+  jQuery(this.panels).hide();
+  jQuery(this.panels[this.current - 1]).show();
+};
+
+BaggageBand.prototype.nextPage = function() {
   // check and make sure we aren't at
   // the end go to start if we are
   if (this.current === this.items){
@@ -65,18 +72,24 @@ BaggageBand.prototype.next = function() {
   } else {
     this.current++;
   }
+
+  this._displayCurrentPanel();
+
   jQuery(document).trigger('baggageband.next');
 };
 
 
-BaggageBand.prototype.prev = function() {
+BaggageBand.prototype.prevPage = function() {
   // check and make sure we aren't at
   // the end go to start if we are
-  if (this.current === this.items){
-    this.current = 1;
+  if (this.current === 1){
+    this.current = this.items;
   } else {
     this.current--;
   }
+
+  this._displayCurrentPanel();
+
   jQuery(document).trigger('baggageband.prev');
 };
 
