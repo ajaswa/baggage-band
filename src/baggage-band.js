@@ -18,25 +18,22 @@ jQuery.fn.baggageband = function( options ) {
 };
 
 BaggageBand.options = {
-  container : '#bb-container',
-  content   : '#bb-content',
-  prev      : '#bb-previous',
-  next      : '#bb-next',
-  current   : 1, // if you want to change the starting position
-  html      : '<div></div>'
+  container     : '#bb-container',
+  content       : '#bb-content',
+  prev          : '#bb-previous',
+  next          : '#bb-next',
+  current       : 1, // if you want to change the starting position
+  html          : '<div></div>',
+  controlsHtml  :
 };
 
 
 BaggageBand.prototype.init = function(selector, options) {
-  // init('.baggageband', {...})
-  // if(selector !== undefined) {  }
-  // init({...})
-  // if(typeof selector === 'object' && options === undefined) { options = selector; selector = undefined; }
 
   this.options  = jQuery.extend({}, BaggageBand.options, options);
-  this.container = selector || this.options.container;
-  this.next = this.options.next;
-  this.prev = this.options.prev;
+  this.containerEl = selector || this.options.container;
+  this.nextEl = this.options.next;
+  this.prevEl = this.options.prev;
   this.current = this.options.current;
   this.panels = jQuery(this.options.content).children(); // This can be done better.
   this.items = this.panels.length;
@@ -46,49 +43,47 @@ BaggageBand.prototype.init = function(selector, options) {
 };
 
 BaggageBand.prototype._setup = function() {
-  // var next = jQuery.proxy(, this);
+
   // Add HTML to DOM
   // jQuery(this.container).append(BaggageBand.options.html);
-  var that = this;
-  // console.log(jQuery(this.next));
-  jQuery(this.next).on('click', function() { that._paginate('next', that) } );
-  jQuery(this.prev).on('click', function() { that._paginate('prev', that) } );
+
+  var that = this,
+      nextEv = jQuery.proxy(this._next, this),
+      prevEv = jQuery.proxy(this._prev, this);
+
+  jQuery(this.nextEl).on('click', nextEv);
+  jQuery(this.prevEl).on('click', prevEv);
+
+  jQuery(document).on('baggageband.next baggageband.prev', function(){
+    console.log('current', that.current)
+  });
 
   jQuery(document).trigger('baggageband.initialized');
 };
 
-BaggageBand.prototype._paginate = function(thing, that) {
-  switch (thing) {
-    case 'next':
-      // check and make sure we aren't at
-      // the end go to start if we are
-      if (that.current === that.items){
-        that.current = 1;
-      } else {
-        that.current++;
-      }
-      jQuery(document).trigger('baggageband.next');
-      break;
-    case 'prev':
-      // check and make sure we aren't at
-      // the start go to end if we are
-      if (that.current === 1){
-        that.current = that.items;
-      } else {
-        that.current--;
-      }
-      jQuery(document).trigger('baggageband.prev');
-      break;
-    default:
-      // if we don't pass in prev or next pass in a number.
-      that.current = thing;
-      console.log(thing);
-      break;
+BaggageBand.prototype._next = function() {
+  // check and make sure we aren't at
+  // the end go to start if we are
+  if (this.current === this.items){
+    this.current = 1;
+  } else {
+    this.current++;
   }
-  // now we know where to go, trigger event and show panel
-  //
+  jQuery(document).trigger('baggageband.next');
+};
 
-  console.log(that.current);
+BaggageBand.prototype._prev = function() {
+  // check and make sure we aren't at
+  // the start go to end if we are
+  if (this.current === 1){
+    this.current = this.items;
+  } else {
+    this.current--;
+  }
+  jQuery(document).trigger('baggageband.prev');
+};
 
+BaggageBand.prototype._paginate = function(page) {
+  this.current = page;
   jQuery(document).trigger('baggageband.paginated');
 };

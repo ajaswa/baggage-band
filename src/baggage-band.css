@@ -1,0 +1,34 @@
+#bb-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 200px;
+}
+
+#bb-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+
+#bb-content > * {
+
+}
+
+#bb-controls {
+
+}
+
+#bb-previous {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+}
+
+#bb-next {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+}
